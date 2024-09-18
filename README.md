@@ -1,2 +1,3 @@
-# task-manager
-Task Manager made in Spring Boot
+# Task Manager
+
+Made in Spring Boot.
