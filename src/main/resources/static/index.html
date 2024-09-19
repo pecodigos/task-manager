@@ -11,24 +11,28 @@
             <h1>terminal task manager</h1>
             <p class="caret"></p>
         </div>
-        <div>
-            <a href="index.html">New Task</a>
-            <a href="tasklist.html">Task List</a>
-        </div>
     </header>
     <main class="container">
     <section class="container__newtask">
-        <h2>start a new task</h2>
+        <div class="information_title">
+            <h2>start a new task</h2>
+        </div>
         <form id="taskForm">
-            <label for="taskTitle">Title:</label>
-            <textarea id="taskTitle" name="taskTitle" required></textarea>
-
-            <label for="taskDescription">Description:</label>
-            <textarea id="taskDescription" name="taskDescription" required></textarea>
-
+            <div class="inputs">
+                <label for="taskTitle">/title ></label>
+                <textarea id="taskTitle" name="taskTitle" maxlength="30" required></textarea>
+            </div>
+            <div class="inputs">
+                <label for="taskDescription">/description ></label>
+                <textarea id="taskDescription" name="taskDescription" maxlength="100" required></textarea>
+            </div>
             <button class="create_task" type="submit">Create task</button>
         </form>
     </section>
+        <section class="container__tasklist">
+            <h2>Task list</h2>
+            <ul id="taskList"></ul>
+        </section>
     </main>
     <footer>
         made by <a href="https://github.com/pecodigos">/pecodigos</a>
