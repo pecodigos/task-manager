@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   postgresql:
     container_name: task_manager_postgres

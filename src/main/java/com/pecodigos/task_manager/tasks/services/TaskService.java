@@ -53,10 +53,10 @@ public class TaskService implements TaskServiceInterface{
         if (optionalTask.isEmpty()) {
             throw new NoSuchElementException("No task found");
         }
-        var user = optionalTask.get();
-        BeanUtils.copyProperties(taskDTO, user);
+        var task = optionalTask.get();
+        BeanUtils.copyProperties(taskDTO, task);
 
-        return taskRepository.save(user);
+        return taskRepository.save(task);
     }
 
     @Override
