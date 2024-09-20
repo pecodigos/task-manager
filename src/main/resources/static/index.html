@@ -12,11 +12,10 @@
             <p class="caret"></p>
         </div>
     </header>
-    <main class="container">
-    <section class="container__newtask">
-        <div class="information_title">
-            <h2>start a new task</h2>
-        </div>
+    <div class="information_title">
+        <h2>start a new task</h2>
+    </div>
+    <section class="container">
         <form id="taskForm">
             <div class="terminal_begin">
                 <div class="inputs">
@@ -28,14 +27,11 @@
                     <textarea id="taskDescription" name="taskDescription" maxlength="136" required></textarea>
                 </div>
             </div>
-            <button class="create_task" type="submit">Create task</button>
+            <div class="button_div">
+                <button class="create_task" type="submit" onclick="removeTextArea()">create task</button>
+            </div>
         </form>
     </section>
-        <section class="container__tasklist">
-            <h2>Task list</h2>
-            <ul id="taskList"></ul>
-        </section>
-    </main>
     <footer>
         made by <a href="https://github.com/pecodigos">/pecodigos</a>
     </footer>

@@ -17,7 +17,7 @@ a {
 }
 
 header {
-    padding-bottom: 3rem;
+    padding-bottom: 1rem;
     display: flex;
     justify-content: space-between;
 }
@@ -38,9 +38,13 @@ body {
 
 .container {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
+    padding: 3%;
+    font-family: "JetBrains Mono", monospace;
     border: 0.1rem solid var(--text-color);
-    height: 70vh;
+    height: 60vh;
+    border-radius: 0.4rem;
 }
 
 .caret
@@ -61,23 +65,6 @@ body {
     }
 }
 
-.container__newtask {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 3%;
-    gap: 1.2rem;
-    font-family: "JetBrains Mono", monospace;
-}
-
-.container__tasklist {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 3%;
-    gap: 1.2rem;
-}
-
 .information_title {
     display: flex;
     justify-content: center;
@@ -87,8 +74,9 @@ body {
 form {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
+    gap: 20rem;
     font-size: 1.2rem;
+    justify-content: space-between;
 }
 
 .inputs {
@@ -116,10 +104,6 @@ textarea {
     flex-direction: column;
 }
 
-#taskDescription {
-    height: 6rem;
-}
-
 .description {
     display: flex;
     align-items: baseline;
@@ -127,8 +111,8 @@ textarea {
 
 .create_task {
     width: 10rem;
-    height: 1.5rem;
-    border-radius: 0.1rem;
+    height: 2rem;
+    border-radius: 0.25rem;
     background-color: lightyellow;
     font-family: monospace;
 }
@@ -145,5 +129,7 @@ textarea {
 }
 
 footer {
-
+    display: flex;
+    justify-content: end;
+    gap: 0.2rem;
 }

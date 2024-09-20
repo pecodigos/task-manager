@@ -1,3 +1,8 @@
+function displayText(tag, text) {
+    let userText = document.querySelector(tag);
+    userText.innerHTML = text;
+}
+
 // Fetch all tasks and display them
 function fetchTasks() {
     fetch('http://localhost:8080/tasks/')
@@ -41,3 +46,8 @@ document.getElementById('taskForm').addEventListener('submit', function (e) {
 
 // Load tasks on page load
 window.onload = fetchTasks;
+
+function removeTextArea() {
+    document.querySelector("#taskTitle").value = "";
+    document.querySelector("#taskDescription").value = "";
+}
