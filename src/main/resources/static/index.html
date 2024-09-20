@@ -18,13 +18,15 @@
             <h2>start a new task</h2>
         </div>
         <form id="taskForm">
-            <div class="inputs">
-                <label for="taskTitle">/title ></label>
-                <textarea id="taskTitle" name="taskTitle" maxlength="30" required></textarea>
-            </div>
-            <div class="inputs">
-                <label for="taskDescription">/description ></label>
-                <textarea id="taskDescription" name="taskDescription" maxlength="100" required></textarea>
+            <div class="terminal_begin">
+                <div class="inputs">
+                    <label for="taskTitle">/title ></label>
+                    <textarea id="taskTitle" name="taskTitle" maxlength="50" required></textarea>
+                </div>
+                <div class="inputs description">
+                    <label for="taskDescription">/description ></label>
+                    <textarea id="taskDescription" name="taskDescription" maxlength="136" required></textarea>
+                </div>
             </div>
             <button class="create_task" type="submit">Create task</button>
         </form>

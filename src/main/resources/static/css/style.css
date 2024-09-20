@@ -41,7 +41,6 @@ body {
     flex-direction: column;
     border: 0.1rem solid var(--text-color);
     height: 70vh;
-
 }
 
 .caret
@@ -81,7 +80,8 @@ body {
 
 .information_title {
     display: flex;
-    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
 }
 
 form {
@@ -100,7 +100,7 @@ form {
 }
 
 textarea {
-    width: 20rem;
+    width: 90rem;
     height: 1.5rem;
     color: var(--text-color);
     background-color: var(--bg-color);
@@ -116,9 +116,32 @@ textarea {
     flex-direction: column;
 }
 
+#taskDescription {
+    height: 6rem;
+}
+
+.description {
+    display: flex;
+    align-items: baseline;
+}
+
 .create_task {
     width: 10rem;
     height: 1.5rem;
+    border-radius: 0.1rem;
+    background-color: lightyellow;
+    font-family: monospace;
+}
+
+.button_div {
+    display: flex;
+    justify-content: center;
+}
+
+.terminal_begin {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
 }
 
 footer {
