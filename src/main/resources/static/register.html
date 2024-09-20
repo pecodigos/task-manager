@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>register - task manager</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <div class="title_header">
+    <h1>terminal task manager</h1>
+    <p class="caret"></p>
+  </div>
+</header>
+<div class="information_title">
+  <h2>register</h2>
+</div>
+<section class="container">
+  <form id="taskForm_register">
+    <div class="terminal_begin">
+      <div class="inputs">
+        <label for="name">/name ></label>
+        <textarea id="name" name="name" maxlength="90" required></textarea>
+      </div>
+      <div class="inputs">
+        <label for="username">/username ></label>
+        <textarea id="username" name="username" maxlength="20" required></textarea>
+      </div>
+      <div class="inputs">
+        <label for="email">/email ></label>
+        <textarea id="email" name="email" maxlength="90" required></textarea>
+      </div>
+      <div class="inputs">
+        <label for="password">/password ></label>
+        <textarea id="password" name="password" maxlength="50" required></textarea>
+      </div>
+    </div>
+    <div class="button_div">
+      <button class="create_task" type="submit">register</button>
+    </div>
+  </form>
+</section>
+<footer>
+  made by <a href="https://github.com/pecodigos">/pecodigos</a>
+</footer>
+<script src="js/register.js"></script>
+</body>
+</html>

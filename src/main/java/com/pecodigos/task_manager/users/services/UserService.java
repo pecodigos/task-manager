@@ -6,6 +6,7 @@ import com.pecodigos.task_manager.users.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,17 @@ public class UserService implements UserServiceInterface{
 
     @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public String hashPassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    public boolean checkPassword(String password, String hashPassword) {
+        return passwordEncoder.matches(password, hashPassword);
+    }
 
     @Override
     public Optional<User> getUserById(UUID id) {
@@ -40,6 +52,7 @@ public class UserService implements UserServiceInterface{
         }
         var user = new User();
         BeanUtils.copyProperties(userDTO, user);
+        user.setPassword(hashPassword(userDTO.password()));
 
         return userRepository.save(user);
     }
