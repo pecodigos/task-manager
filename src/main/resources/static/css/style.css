@@ -113,6 +113,20 @@ input {
     border: none;
     resize: none;
     font-family: "JetBrains Mono", monospace;
+    position: relative;
+}
+
+.input_container {
+
+}
+
+.text_caret {
+    background-color: var(--text-color);
+    width: 2px;
+    height: 1.5em;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 #password {
