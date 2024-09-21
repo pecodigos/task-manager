@@ -1,0 +1,23 @@
+{
+  "name": "task_manager",
+  "version": "1.0.0",
+  "description": "Made in Spring Boot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pecodigos/task-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pecodigos/task-manager/issues"
+  },
+  "homepage": "https://github.com/pecodigos/task-manager#readme",
+  "dependencies": {
+    "@xterm/xterm": "^5.5.0"
+  }
+}

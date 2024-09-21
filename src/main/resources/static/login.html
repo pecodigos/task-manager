@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>log in - terminal</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/xterm.css" />
+  <script src="/js/xterm.js"></script>
 </head>
 <body>
 <header>
@@ -15,28 +17,10 @@
 <div class="information_title">
   <h2>/login</h2>
 </div>
-<section class="container">
-  <form id="taskForm">
-    <div class="terminal_begin">
-      <div class="inputs">
-        <label for="username">/login/username ></label>
-        <div class="input_container">
-          <input id="username" name="username" maxlength="20" required>
-          <span class="text_caret"></span>
-        </div>
-
-      </div>
-      <div class="inputs">
-        <label for="password">/login/password ></label>
-        <input type="password" id="password" name="password" maxlength="50" required>
-      </div>
-    </div>
-    <div class="button_div">
-      <button class="button_button" type="submit">log in</button>
-    </div>
-  </form>
-  <div id="redirectLogin" style="display:none; text-align: center;"></div>
-</section>
+  <section class="container">
+    <div id="terminal"></div>
+    <div id="redirectLogin" style="display:none; text-align: center;"></div>
+  </section>
 <footer class="footer">
   <div>
     Don't have an account? Create one <a href="/register.html">here</a>.
@@ -45,6 +29,6 @@
     made by <a href="https://github.com/pecodigos">/pecodigos</a>
   </div>
 </footer>
-<script src="js/login.js"></script>
+<script src="js/terminal_setup.js"></script>
 </body>
 </html>

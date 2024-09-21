@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>register - terminal</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/xterm.css" />
+  <script src="/js/xterm.js"></script>
 </head>
 <body>
 <header>
@@ -16,29 +18,7 @@
   <h2>/register</h2>
 </div>
 <section class="container">
-  <form id="taskForm_register">
-    <div class="terminal_begin">
-      <div class="inputs">
-        <label for="name">/register/name ></label>
-        <input id="name" name="name" maxlength="90" required>
-      </div>
-      <div class="inputs">
-        <label for="username">/register/username ></label>
-        <input id="username" name="username" maxlength="20" required>
-      </div>
-      <div class="inputs">
-        <label for="email">/register/email ></label>
-        <input id="email" name="email" maxlength="90" required>
-      </div>
-      <div class="inputs">
-        <label for="password">/register/password ></label>
-        <input type="password" id="password" name="password" maxlength="50" required>
-      </div>
-    </div>
-    <div class="button_div">
-      <button class="button_button" type="submit">register</button>
-    </div>
-  </form>
+  <div id="terminal"></div>
   <div id="redirectLogin" style="display:none; text-align: center;"></div>
 </section>
 <footer class="footer">
@@ -49,6 +29,6 @@
     made by <a href="https://github.com/pecodigos">/pecodigos</a>
   </div>
 </footer>
-<script src="js/register.js"></script>
+<script src="js/register_terminal_setup.js"></script>
 </body>
 </html>
