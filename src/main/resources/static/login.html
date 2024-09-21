@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>register - terminal</title>
+  <title>log in - terminal</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,42 +13,34 @@
   </div>
 </header>
 <div class="information_title">
-  <h2>/register</h2>
+  <h2>/login</h2>
 </div>
 <section class="container">
-  <form id="taskForm_register">
+  <form id="taskForm">
     <div class="terminal_begin">
       <div class="inputs">
-        <label for="name">/register/name ></label>
-        <textarea id="name" name="name" maxlength="90" required></textarea>
-      </div>
-      <div class="inputs">
-        <label for="username">/register/username ></label>
+        <label for="username">/login/username ></label>
         <textarea id="username" name="username" maxlength="20" required></textarea>
       </div>
       <div class="inputs">
-        <label for="email">/register/email ></label>
-        <textarea id="email" name="email" maxlength="90" required></textarea>
-      </div>
-      <div class="inputs">
-        <label for="password">/register/password ></label>
+        <label for="password">/login/password ></label>
         <textarea id="password" name="password" maxlength="50" required></textarea>
       </div>
     </div>
     <div class="button_div">
-      <button class="button_button" type="submit">register</button>
+      <button class="button_button" type="submit">log in</button>
     </div>
   </form>
   <div id="redirectLogin" style="display:none; text-align: center;"></div>
 </section>
 <footer class="footer">
   <div>
-    Already have an account? Log in <a href="login.html">here</a>.
+    Don't have an account? Create one <a href="/register.html">here</a>.
   </div>
   <div>
     made by <a href="https://github.com/pecodigos">/pecodigos</a>
   </div>
 </footer>
-<script src="js/register.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

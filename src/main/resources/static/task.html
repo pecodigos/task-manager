@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task - terminal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <div class="title_header">
+        <h1>terminal task manager</h1>
+        <p class="caret"></p>
+    </div>
+</header>
+<div class="information_title">
+    <h2>start a new task</h2>
+</div>
+<section class="container">
+    <form id="taskForm">
+        <div class="terminal_begin">
+            <div class="inputs">
+                <label for="taskTitle">/title ></label>
+                <textarea id="taskTitle" name="taskTitle" maxlength="50" required></textarea>
+            </div>
+            <div class="inputs description">
+                <label for="taskDescription">/description ></label>
+                <textarea id="taskDescription" name="taskDescription" maxlength="136" required></textarea>
+            </div>
+        </div>
+        <div class="button_div">
+            <button class="button_button" type="submit">create task</button>
+        </div>
+    </form>
+</section>
+<footer>
+    <div>
+        made by <a href="https://github.com/pecodigos">/pecodigos</a>
+    </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
