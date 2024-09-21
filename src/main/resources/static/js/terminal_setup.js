@@ -2,52 +2,82 @@ document.addEventListener("DOMContentLoaded", function () {
     const terminal = new Terminal();
     terminal.open(document.getElementById('terminal'));
 
-    // Simulate the login prompt
     let currentStep = 'username'; // track the current step (username or password)
     let username = '';
     let password = '';
     let userInput = '';
 
-    terminal.write('Welcome to terminal task manager!\r\n');
-    terminal.write('Please enter your username:\r\n> ');
+    function resetTerminal() {
+        terminal.clear();
+        currentStep = 'username';
+        username = '';
+        password = '';
+        userInput = '';
+        terminal.write('Welcome to terminal task manager!\r\n');
+        terminal.write('Please enter your username:\r\n> ');
+    }
+
+    resetTerminal(); // Call this once at the start
 
     terminal.onKey((e) => {
         const char = e.key;
 
-        if (char === '\r') { // Enter key
+        if (char === '\r') { // Enter key pressed
             terminal.write('\r\n');
             if (currentStep === 'username') {
                 username = userInput;
                 terminal.write('Please enter your password:\r\n> ');
                 currentStep = 'password';
-                userInput = '';
+                userInput = ''; // Reset input for the next step
             } else if (currentStep === 'password') {
                 password = userInput;
-                terminal.write('Password accepted.\r\n');
                 terminal.write('Logging in...\r\n');
                 loginUser(username, password);
             }
-        } else if (char === '\u007F') {
+        } else if (char === '\u007F') { // Backspace key
             if (userInput.length > 0) {
                 terminal.write('\b \b');
                 userInput = userInput.slice(0, -1);
             }
         } else {
-            terminal.write(char);
-            userInput += char;
+            if (currentStep === 'password') {
+                // Append the actual character to userInput but display an asterisk
+                userInput += char;
+                terminal.write('*'); // Show asterisk instead of the character
+            } else {
+                terminal.write(char);
+                userInput += char; // Regular input for username
+            }
         }
     });
 
-    // Simulate login (replace this with actual logic if needed)
+    // Actual login
     function loginUser(username, password) {
         terminal.write(`Attempting login for ${username}...\r\n`);
 
-        // Simulate a successful login after 2 seconds
-        setTimeout(() => {
-            terminal.write('Login successful!\r\n');
-            document.getElementById('redirectLogin').style.display = 'block';
-            document.getElementById('redirectLogin').innerText = 'Redirecting...';
-            window.location.href = '../task.html';2
-        }, 2000);
+        fetch('/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+                return response.json();
+            })
+            .then(() => {
+                terminal.write('Login successful!\r\n');
+                document.getElementById('redirectLogin').style.display = 'block';
+                document.getElementById('redirectLogin').innerText = 'Redirecting...';
+                window.location.href = '../task.html'; // Redirect after successful login
+            })
+            .catch(error => {
+                terminal.write(`Error: ${error.message}\r\n`);
+                terminal.write('Please try again.\r\n');
+                setTimeout(resetTerminal, 2000); // Reset terminal after a brief delay
+            });
     }
 });

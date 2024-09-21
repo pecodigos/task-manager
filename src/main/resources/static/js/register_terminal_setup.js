@@ -2,63 +2,100 @@ document.addEventListener("DOMContentLoaded", function () {
     const terminal = new Terminal();
     terminal.open(document.getElementById('terminal'));
 
-    let currentStep = 'name'; // track which input we are asking for
+    let currentStep = 'name';
     let name = '';
     let username = '';
     let email = '';
     let password = '';
     let userInput = '';
 
-    terminal.write('Welcome to terminal task manager!\r\n');
-    terminal.write('Please enter your name:\r\n> ');
+    function resetTerminal() {
+        terminal.clear();
+        currentStep = 'name';
+        name = '';
+        username = '';
+        email = '';
+        password = '';
+        userInput = '';
+        terminal.write('Welcome to terminal task manager!\r\n');
+        terminal.write('Please enter your name:\r\n> ');
+    }
+
+    resetTerminal(); // Call this once at the start
 
     terminal.onKey((e) => {
         const char = e.key;
 
         if (char === '\r') { // Enter key pressed
             terminal.write('\r\n');
-
             if (currentStep === 'name') {
                 name = userInput;
                 terminal.write('Please enter your username:\r\n> ');
                 currentStep = 'username';
-                userInput = ''; // reset input for the next step
+                userInput = ''; // Reset input for the next step
             } else if (currentStep === 'username') {
                 username = userInput;
                 terminal.write('Please enter your email:\r\n> ');
                 currentStep = 'email';
-                userInput = ''; // reset input for the next step
+                userInput = ''; // Reset input for the next step
             } else if (currentStep === 'email') {
                 email = userInput;
                 terminal.write('Please enter your password:\r\n> ');
                 currentStep = 'password';
-                userInput = ''; // reset input for the next step
+                userInput = ''; // Reset input for the next step
             } else if (currentStep === 'password') {
                 password = userInput;
                 terminal.write('Registering...\r\n');
-                registerUser(name, username, email, password); // simulate registration process
+                registerUser(name, username, email, password);
             }
         } else if (char === '\u007F') { // Backspace key
             if (userInput.length > 0) {
                 terminal.write('\b \b');
                 userInput = userInput.slice(0, -1);
+                // If current step is password, we need to handle masking
+                if (currentStep === 'password') {
+                    terminal.write('\b \b'); // Remove the last asterisk too
+                }
             }
         } else {
-            terminal.write(char);
-            userInput += char;
+            if (currentStep === 'password') {
+                terminal.write('*'); // Show asterisk instead of the character
+            } else {
+                terminal.write(char);
+            }
+            userInput += char; // Always append the actual character
         }
     });
 
-    // Simulate registration (you would replace this with actual logic)
+    // Actual registration
     function registerUser(name, username, email, password) {
         terminal.write(`Attempting to register ${username}...\r\n`);
 
-        // Simulate a successful registration after 2 seconds
-        setTimeout(() => {
-            terminal.write('Registration successful!\r\n');
-            document.getElementById('redirectLogin').style.display = 'block';
-            document.getElementById('redirectLogin').innerText = 'Redirecting to login page...';
-            window.location.href = '/login.html'; // redirect to login page
-        }, 2000);
+        fetch('/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, username, email, password })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Registration failed');
+                }
+                return response.json();
+            })
+            .then(() => {
+                terminal.write('Registration successful!\r\n');
+                document.getElementById('redirectLogin').style.display = 'block';
+                document.getElementById('redirectLogin').innerText = 'Redirecting to login page...';
+                setTimeout(() => {
+                    window.location.href = '/login.html'; // Redirect to login page
+                }, 2000);
+            })
+            .catch(error => {
+                terminal.write(`Error: ${error.message}\r\n`);
+                terminal.write('Please press Enter to try again.\r\n');
+                setTimeout(resetTerminal, 2000); // Reset terminal after a brief delay
+            });
     }
 });
