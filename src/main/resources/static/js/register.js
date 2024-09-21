@@ -7,7 +7,7 @@ document.getElementById('taskForm_register').addEventListener('submit', function
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('http://localhost:8080/user/', {
+    fetch('http://localhost:8080/user/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ document.getElementById('taskForm_register').addEventListener('submit', function
 function showMessage(message, isSuccess) {
     const messageContainer = document.createElement('div');
     messageContainer.textContent = message;
-    messageContainer.style.backgroundColor = isSuccess ? 'lightgreen' : 'lightcoral';
+    messageContainer.style.backgroundColor = isSuccess ? '#7CE77CFF' : 'lightcoral';
     messageContainer.style.padding = '1rem';
     messageContainer.style.marginTop = '1rem';
     messageContainer.style.textAlign = 'center';

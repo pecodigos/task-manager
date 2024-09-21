@@ -40,7 +40,7 @@ body {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    padding: 3%;
+    padding: 1%;
     font-family: "JetBrains Mono", monospace;
     border: 0.1rem solid var(--text-color);
     height: 60vh;
@@ -103,7 +103,7 @@ body {
     color: cornflowerblue;
 }
 
-textarea {
+input {
     width: 85rem;
     height: 1.5rem;
     color: var(--text-color);
@@ -112,6 +112,13 @@ textarea {
     outline: none;
     border: none;
     resize: none;
+    font-family: "JetBrains Mono", monospace;
+}
+
+#password {
+    letter-spacing: 0.2rem;
+    font-size: 0.9rem;
+    padding-left: 0.1rem;
 }
 
 .labels {

@@ -1,5 +1,6 @@
 package com.pecodigos.task_manager.users.services;
 
+import com.pecodigos.task_manager.users.dtos.LoginDTO;
 import com.pecodigos.task_manager.users.dtos.UserDTO;
 import com.pecodigos.task_manager.users.models.User;
 import com.pecodigos.task_manager.users.repositories.UserRepository;
@@ -55,6 +56,22 @@ public class UserService implements UserServiceInterface{
         user.setPassword(hashPassword(userDTO.password()));
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public User loginUser(LoginDTO loginDTO) {
+        Optional<User> optionalUser = userRepository.findByUsername(loginDTO.username());
+
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("Invalid username or password.");
+        }
+        var user = optionalUser.get();
+
+        if (!passwordEncoder.matches(loginDTO.password(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password.");
+        }
+
+        return user;
     }
 
     @Override

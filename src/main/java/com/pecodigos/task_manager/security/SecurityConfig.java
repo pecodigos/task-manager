@@ -1,4 +1,4 @@
-package com.pecodigos.task_manager.config;
+package com.pecodigos.task_manager.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
