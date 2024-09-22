@@ -1,5 +1,6 @@
 package com.pecodigos.task_manager.users.models;
 
+import com.pecodigos.task_manager.projects.models.Project;
 import com.pecodigos.task_manager.tasks.models.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -42,6 +43,9 @@ public class User extends RepresentationModel<User> implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user")
+    private List<Project> projects;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

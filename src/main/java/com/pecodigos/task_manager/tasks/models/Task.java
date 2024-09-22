@@ -1,10 +1,13 @@
 package com.pecodigos.task_manager.tasks.models;
 
+import com.pecodigos.task_manager.projects.models.Project;
 import com.pecodigos.task_manager.tasks.enums.Priority;
 import com.pecodigos.task_manager.tasks.enums.Status;
 import com.pecodigos.task_manager.users.models.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -14,6 +17,8 @@ import java.util.UUID;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_tasks")
 public class Task extends RepresentationModel<Task> implements Serializable {
 
@@ -34,6 +39,13 @@ public class Task extends RepresentationModel<Task> implements Serializable {
 
     @Column(name = "user_id")
     private UUID userId;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", insertable = false, updatable = false)
+    private Project project;
+
+    @Column(name = "project_id")
+    private Long projectId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
