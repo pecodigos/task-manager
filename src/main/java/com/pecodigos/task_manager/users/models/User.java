@@ -1,5 +1,6 @@
 package com.pecodigos.task_manager.users.models;
 
+import com.pecodigos.task_manager.tasks.models.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +39,9 @@ public class User extends RepresentationModel<User> implements Serializable {
 
     @Length(min = 10, max = 100)
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
