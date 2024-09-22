@@ -4,6 +4,8 @@ import com.pecodigos.task_manager.users.dtos.LoginDTO;
 import com.pecodigos.task_manager.users.dtos.UserDTO;
 import com.pecodigos.task_manager.users.models.User;
 import com.pecodigos.task_manager.users.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +61,16 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logoutUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")

@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         email = '';
         password = '';
         userInput = '';
-        terminal.write('Welcome to terminal task manager!\r\n');
+        terminal.write('Register your account\r\n');
         terminal.write('Please enter your name:\r\n> ');
     }
 
@@ -74,8 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Actual registration
     function registerUser(name, username, email, password) {
-        terminal.write(`Attempting to register ${username}...\r\n`);
-
         fetch('/user/register', {
             method: 'POST',
             headers: {
@@ -90,16 +88,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(() => {
-                terminal.write('Registration successful!\r\n');
-                document.getElementById('redirectLogin').style.display = 'block';
-                document.getElementById('redirectLogin').innerText = 'Redirecting to login page...';
+                terminal.write('\nRegistration successful!\r\n');
+                terminal.write("\nRedirecting...");
                 setTimeout(() => {
                     window.location.href = '/login.html'; // Redirect to login page
-                }, 2000);
+                }, 3000);
             })
             .catch(error => {
+                resetTerminal();
                 terminal.write(`Error: ${error.message}\r\n`);
-                terminal.write('Please press Enter to try again.\r\n');
+                terminal.write('Please, try again.\r\n');
                 setTimeout(resetTerminal, 2000); // Reset terminal after a brief delay
             });
     }

@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         username = '';
         password = '';
         userInput = '';
-        terminal.write('Welcome to terminal task manager!\r\n');
+        terminal.write('Welcome to terminal task manager\r\n');
         terminal.write('Please enter your username:\r\n> ');
     }
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 userInput = ''; // Reset input for the next step
             } else if (currentStep === 'password') {
                 password = userInput;
-                terminal.write('Logging in...\r\n');
+                terminal.write('\nLogging in...\r\n');
                 loginUser(username, password);
             }
         } else if (char === '\u007F' || (domEvent.ctrlKey && char === '\b')) { // Backspace key
@@ -58,8 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Actual login
     function loginUser(username, password) {
-        terminal.write(`Attempting login for ${username}...\r\n`);
-
         fetch('/user/login', {
             method: 'POST',
             headers: {
@@ -75,14 +73,16 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(() => {
                 terminal.write('Login successful!\r\n');
-                document.getElementById('redirectLogin').style.display = 'block';
-                document.getElementById('redirectLogin').innerText = 'Redirecting...';
-                window.location.href = '../task.html'; // Redirect after successful login
-            })
+                terminal.write("\nRedirecting...");
+                setTimeout(() => {
+                    window.location.href = '/tasks.html'; // Redirect to login page
+                }, 3000);
+            }) // Redirect after successful login
             .catch(error => {
+                resetTerminal();
                 terminal.write(`Error: ${error.message}\r\n`);
                 terminal.write('Please try again.\r\n');
-                setTimeout(resetTerminal, 2000); // Reset terminal after a brief delay
+                setTimeout(resetTerminal, 3000); // Reset terminal after a brief delay
             });
     }
 });
