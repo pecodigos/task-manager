@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const terminal = new Terminal();
+    const fitAddon = new FitAddon.FitAddon(); // Global FitAddon object
+    terminal.loadAddon(fitAddon);
+
     terminal.open(document.getElementById('terminal'));
+    fitAddon.fit(); // Fit the terminal to its container
 
     let currentStep = 'username'; // track the current step (username or password)
     let username = '';
@@ -21,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     terminal.onKey((e) => {
         const char = e.key;
+        const domEvent = e.domEvent;
 
         if (char === '\r') { // Enter key pressed
             terminal.write('\r\n');
@@ -34,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 terminal.write('Logging in...\r\n');
                 loginUser(username, password);
             }
-        } else if (char === '\u007F') { // Backspace key
+        } else if (char === '\u007F' || (domEvent.ctrlKey && char === '\b')) { // Backspace key
             if (userInput.length > 0) {
                 terminal.write('\b \b');
                 userInput = userInput.slice(0, -1);

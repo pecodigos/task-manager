@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 :root {
-    --bg-color: #070707;
+    --bg-color: #0a0a0a;
     --text-color: lightyellow;
 }
 
@@ -10,6 +10,7 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
+    font-family: "JetBrains Mono", monospace;
 }
 
 a {
@@ -44,6 +45,7 @@ body {
     border: 0.1rem solid var(--text-color);
     height: 60vh;
     border-radius: 0.3rem;
+    overflow: hidden;
 }
 
 #terminal {
