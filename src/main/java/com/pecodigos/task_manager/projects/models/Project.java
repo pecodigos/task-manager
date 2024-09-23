@@ -32,10 +32,10 @@ public class Project extends RepresentationModel<Project> implements Serializabl
     private List<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "project_id")
+    @Column(name = "user_id")
     private UUID userId;
 
     @CreationTimestamp

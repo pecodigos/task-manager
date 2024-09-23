@@ -31,13 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
             terminal.write('\r\n');
             if (currentStep === 'title') {
                 title = userInput;
-                terminal.write('Please enter your password:\r\n> ');
-                currentStep = 'password';
+                terminal.write('Please enter a description:\r\n> ');
+                currentStep = 'description';
                 userInput = ''; // Reset input for the next step
-            } else if (currentStep === 'password') {
-                password = userInput;
-                terminal.write('\nLogging in...\r\n');
-                loginUser(username, password);
+            } else if (currentStep === 'description') {
+                description = userInput;
+                terminal.write('\nCreating project...\r\n');
+                postProject(title, description);
             }
         } else if (char === '\u007F' || (domEvent.ctrlKey && char === '\b')) { // Backspace key
             if (userInput.length > 0) {
@@ -45,38 +45,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 userInput = userInput.slice(0, -1);
             }
         } else {
-            if (currentStep === 'password') {
-                // Append the actual character to userInput but display an asterisk
-                userInput += char;
-                terminal.write('*'); // Show asterisk instead of the character
-            } else {
-                terminal.write(char);
-                userInput += char; // Regular input for username
-            }
+            terminal.write(char);
+            userInput += char;
         }
     });
 
     // Actual login
-    function getProjects(username, password) {
-        fetch('/project/', {
+    function postProject(title, description) {
+        fetch('/projects/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ title, description })
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Login failed');
+                    throw new Error('Project was not created.');
                 }
                 return response.json();
             })
             .then(() => {
-                terminal.write('Login successful!\r\n');
-                terminal.write("\nRedirecting...");
-                setTimeout(() => {
-                    window.location.href = '/tasks.html'; // Redirect to login page
-                }, 3000);
+                terminal.write('Project created successful!\r\n');
             }) // Redirect after successful login
             .catch(error => {
                 resetTerminal();

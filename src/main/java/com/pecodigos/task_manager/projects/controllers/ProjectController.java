@@ -23,6 +23,11 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @GetMapping("/projects")
+    public String projectsPage() {
+        return "projects";
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProject(@PathVariable(name = "id") Long id) {
         Optional<Project> optionalProject = projectService.getProjectById(id);
