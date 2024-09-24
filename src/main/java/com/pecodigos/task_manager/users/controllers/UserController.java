@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -54,10 +51,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Object> loginUser(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         try {
             var user = userService.loginUser(loginDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Login successfully.");
+            response.put("redirectUrl", "/projects.html");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

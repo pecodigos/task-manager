@@ -58,31 +58,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Actual login
     function loginUser(username, password) {
+        const formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('password', password);
+
         fetch('/user/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify({ username, password })
+            body: formData.toString()
         })
             .then(response => {
-                if (!response.ok) {
+                if (response.ok) {
+                    return response.json(); // Success, return user data
+                } else {
                     return response.text().then(text => { throw new Error(text); });
                 }
-                return response.json();
             })
-            .then(() => {
+            .then(data => {
                 terminal.write('Login successful!\r\n');
                 terminal.write("\nRedirecting...");
                 setTimeout(() => {
-                    window.location.href="../projects.html";
+                    window.location.href="../projects.html"; // Redirect after a delay
                 }, 3000);
             })
             .catch(error => {
                 resetTerminal();
                 terminal.write(`Error: ${error.message}\r\n`);
                 terminal.write('Please try again.\r\n');
-                setTimeout(resetTerminal, 3000); // Reset terminal after a brief delay
+                setTimeout(resetTerminal, 3000);
             });
     }
 });

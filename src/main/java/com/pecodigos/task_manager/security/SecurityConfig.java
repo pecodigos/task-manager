@@ -1,20 +1,24 @@
 package com.pecodigos.task_manager.security;
 
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfig {
+
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(RetrieveUserService retrieveUserService) {
+        this.userDetailsService = retrieveUserService;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -22,10 +26,17 @@ public class SecurityConfig {
     }
 
     @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-
                 // Permit access to static resources and login/register pages
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login.html", "/register.html", "/css/**", "/js/**").permitAll()
@@ -47,15 +58,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
 
-                // Session management: session created after login
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session only when needed
-                )
-
-                // Remember where the user wanted to go before login
-                .requestCache(requestCache -> requestCache
-                        .requestCache(new HttpSessionRequestCache())
-                );
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

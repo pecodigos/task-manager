@@ -6,7 +6,6 @@ import com.pecodigos.task_manager.users.models.User;
 import com.pecodigos.task_manager.users.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +18,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserService implements UserServiceInterface{
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
     public String hashPassword(String password) {
         return passwordEncoder.encode(password);
-    }
-
-    public boolean checkPassword(String password, String hashPassword) {
-        return passwordEncoder.matches(password, hashPassword);
     }
 
     @Override
@@ -60,6 +57,8 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public User loginUser(LoginDTO loginDTO) {
+        System.out.println("Attempting to log in with username: " + loginDTO.username());
+
         Optional<User> optionalUser = userRepository.findByUsername(loginDTO.username());
 
         if (optionalUser.isEmpty()) {
