@@ -8,4 +8,5 @@ Front-end:
 - JavaScript, HTML, CSS and xterm.js.
 
 How it looks (for now):
-![terminal task manager login page](https://i.imgur.com/mndUsxC.png)
+
+![terminal task manager login page](https://i.imgur.com/aT6bhLz.jpeg)
