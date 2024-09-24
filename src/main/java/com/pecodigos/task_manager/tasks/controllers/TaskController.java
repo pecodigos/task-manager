@@ -23,11 +23,6 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/tasks")
-    public String tasksPage() {
-        return "tasks";
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTask(@PathVariable(name = "id") Long id) {
         Optional<Task> optionalTask = taskService.getTaskById(id);
