@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderMenu() {
         terminal.clear();
         terminal.write('/projects >\r\n');
-        terminal.write('Use arrow keys to navigate and press Enter to select:\r\n');
+        terminal.write('Use arrow keys to navigate and press enter to select:\r\n');
         menuOptions.forEach((option, index) => {
             let prefix = index === selectedOption ? '[x]' : '[ ]';
             terminal.write(`${prefix} ${option.slice(3)}\r\n`);

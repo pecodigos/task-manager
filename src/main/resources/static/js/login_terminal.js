@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     terminal.write("\nRedirecting...");
                     setTimeout(() => {
                         window.location.href = "../projects.html"; // Redirect after a delay
-                    }, 3000);
+                    }, 2000);
                 } else {
                     throw new Error('Login failed');
                 }

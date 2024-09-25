@@ -168,13 +168,6 @@ input {
     gap: 8rem;
 }
 
-.logout_button {
-    background-color: transparent;
-    color: brown;
-    font-size: 1rem;;
-    border-color: transparent;
-}
-
 footer {
     display: flex;
     justify-content: end;
