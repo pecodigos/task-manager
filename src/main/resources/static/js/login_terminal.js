@@ -71,17 +71,15 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => {
                 if (response.ok) {
-                    return response.json(); // Success, return user data
+                    // Login is successful, manually redirect to projects.html
+                    terminal.write('Login successful!\r\n');
+                    terminal.write("\nRedirecting...");
+                    setTimeout(() => {
+                        window.location.href = "../projects.html"; // Redirect after a delay
+                    }, 3000);
                 } else {
-                    return response.text().then(text => { throw new Error(text); });
+                    throw new Error('Login failed');
                 }
-            })
-            .then(data => {
-                terminal.write('Login successful!\r\n');
-                terminal.write("\nRedirecting...");
-                setTimeout(() => {
-                    window.location.href="../projects.html"; // Redirect after a delay
-                }, 3000);
             })
             .catch(error => {
                 resetTerminal();
