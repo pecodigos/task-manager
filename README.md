@@ -9,4 +9,4 @@ Front-end:
 
 How it looks (for now):
 
-![terminal task manager login page](https://i.imgur.com/aT6bhLz.jpeg)
+![terminal task manager login page](https://i.imgur.com/M6w4Izv.jpeg)
