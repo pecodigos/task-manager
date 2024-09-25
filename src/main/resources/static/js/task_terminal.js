@@ -17,11 +17,13 @@ document.addEventListener("DOMContentLoaded", function () {
         username = '';
         password = '';
         userInput = '';
-        terminal.write('Welcome to terminal task manager\r\n');
+        terminal.write('/tasks >\r\n');
         terminal.write('Please enter your username:\r\n> ');
+        terminal.focus();
     }
 
-    resetTerminal(); // Call this once at the start
+    resetTerminal();
+    document.getElementById('terminal').focus();
 
     terminal.onKey((e) => {
         const char = e.key;

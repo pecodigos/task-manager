@@ -18,7 +18,7 @@ a {
 }
 
 header {
-    padding-bottom: 1rem;
+    padding-bottom: 4rem;
     display: flex;
     justify-content: space-between;
 }
@@ -32,7 +32,7 @@ body {
     box-sizing: border-box;
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 3% 5%;
+    padding: 3.25% 5%;
     height: 100vh;
     font-family: "Open Sans", sans-serif;
 }
@@ -43,7 +43,7 @@ body {
     padding: 0.1rem;
     font-family: "JetBrains Mono", monospace;
     border: 0.1rem solid var(--text-color);
-    height: 60vh;
+    height: 65vh;
     border-radius: 0.3rem;
     overflow: hidden;
 }

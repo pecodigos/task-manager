@@ -21,11 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
         email = '';
         password = '';
         userInput = '';
-        terminal.write('Register your account\r\n');
+        terminal.write('/register >\r\n');
         terminal.write('Please enter your name:\r\n> ');
+        terminal.focus();
     }
 
-    resetTerminal(); // Call this once at the start
+    resetTerminal();
+    document.getElementById('terminal').focus();
 
     terminal.onKey((e) => {
         const char = e.key;
