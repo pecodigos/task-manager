@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let actions = ['create', 'view']; // action options
 
     function resetTerminal() {
-        terminal.clear();
         currentStep = 'menu';
         selectedOption = 0;
         renderMenu();
@@ -49,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     currentStep = 'title'; // Go to the project creation step
                     terminal.write('Please enter the title of your new project:\r\n> ');
                 } else if (actions[selectedOption] === 'view') {
-                    terminal.write('\r\nFetching existing projects...\r\n');
                     viewProjects(); // Function to handle fetching and displaying projects
                 }
             }
@@ -57,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (char === '\r') { // Enter key pressed
                 terminal.write('\r\n');
                 title = userInput;
-                terminal.write('Please enter a description:\r\n> ');
+                terminal.write('\nPlease enter a description:\r\n> ');
                 currentStep = 'description';
                 userInput = '';
             } else {
@@ -71,6 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 terminal.write(char);
                 userInput += char;
+            }
+        }
+        else if (currentStep === 'viewProjects') {
+            if (char === '\r') {
+                resetTerminal();
             }
         }
     });
@@ -108,16 +111,17 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => response.json())
             .then(data => {
-                terminal.write('Your projects:\r\n');
+                terminal.write('\nYour projects:\r\n');
+                terminal.write('\n');
                 data.forEach(project => {
                     terminal.write(`- ${project.title}: ${project.description}\r\n`);
                 });
-                setTimeout(resetTerminal, 5000); // Return to menu after displaying projects
+                currentStep = 'viewProjects';
+                terminal.write("\n\nPress enter to go back...\r\n");
             })
             .catch(error => {
                 terminal.write(`Error: ${error.message}\r\n`);
                 setTimeout(resetTerminal, 3000);
             });
     }
-
 });

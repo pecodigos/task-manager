@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     resetTerminal();
-    document.getElementById('terminal').focus();
 
     terminal.onKey((e) => {
         const char = e.key;

@@ -43,7 +43,7 @@ body {
     padding: 0.1rem;
     font-family: "JetBrains Mono", monospace;
     border: 0.1rem solid var(--text-color);
-    height: 65vh;
+    height: 64vh;
     border-radius: 0.3rem;
     overflow: hidden;
 }
