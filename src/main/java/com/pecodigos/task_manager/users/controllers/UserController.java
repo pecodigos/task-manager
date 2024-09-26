@@ -24,6 +24,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/")
+    public String index() {
+        return "redirect: index";
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUser(@PathVariable(value = "id") UUID id) {
         Optional<User> optionalUser = userService.getUserById(id);

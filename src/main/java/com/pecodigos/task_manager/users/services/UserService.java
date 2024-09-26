@@ -22,10 +22,6 @@ public class UserService implements UserServiceInterface{
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
     public String hashPassword(String password) {
         return passwordEncoder.encode(password);
     }
@@ -57,8 +53,6 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public User loginUser(LoginDTO loginDTO) {
-        System.out.println("Attempting to log in with username: " + loginDTO.username());
-
         Optional<User> optionalUser = userRepository.findByUsername(loginDTO.username());
 
         if (optionalUser.isEmpty()) {

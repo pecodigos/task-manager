@@ -39,24 +39,28 @@ public class SecurityConfig {
         http
                 // Permit access to static resources and login/register pages
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login.html", "/register.html", "/css/**", "/js/**").permitAll()
-                        .anyRequest().authenticated() // Protect other pages
+                        .requestMatchers("/css/**", "/js/**", "/index.html", "/").permitAll()
+                        .requestMatchers("/login.html", "/register.html").anonymous()
+                        .anyRequest().authenticated()
                 )
 
                 // Configure form-based login
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login.html")
                         .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/projects.html", true) // Redirect to projects.html after login
-                        .permitAll()
+                        .defaultSuccessUrl("/projects.html", true)
                 )
 
                 // Handle logout
                 .logout(logout -> logout
                         .logoutUrl("/user/logout")
-                        .logoutSuccessUrl("/login.html")
+                        .logoutSuccessUrl("/index.html")
                         .permitAll()
                 )
+
+                .exceptionHandling(exception -> exception.accessDeniedHandler(((request, response, accessDeniedException) -> {
+                    response.sendRedirect("/projects.html");
+                })))
 
                 .csrf(AbstractHttpConfigurer::disable);
 
