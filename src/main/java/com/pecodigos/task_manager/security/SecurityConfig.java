@@ -40,7 +40,7 @@ public class SecurityConfig {
                 // Permit access to static resources and login/register pages
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/css/**", "/js/**", "/index.html", "/").permitAll()
-                        .requestMatchers("/login.html", "/register.html").anonymous()
+                        .requestMatchers("/login.html", "/register.html", "/user/register", "/user/login").anonymous()
                         .anyRequest().authenticated()
                 )
 

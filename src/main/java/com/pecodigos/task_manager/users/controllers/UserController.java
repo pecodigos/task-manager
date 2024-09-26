@@ -1,6 +1,7 @@
 package com.pecodigos.task_manager.users.controllers;
 
 import com.pecodigos.task_manager.users.dtos.LoginDTO;
+import com.pecodigos.task_manager.users.dtos.RegisterDTO;
 import com.pecodigos.task_manager.users.dtos.UserDTO;
 import com.pecodigos.task_manager.users.models.User;
 import com.pecodigos.task_manager.users.services.UserService;
@@ -84,9 +85,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> saveUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<Object> saveUser(@Valid @RequestBody RegisterDTO registerDTO) {
         try {
-            var user = userService.saveUser(userDTO);
+            var user = userService.saveUser(registerDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(user);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

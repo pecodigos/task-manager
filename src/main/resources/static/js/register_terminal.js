@@ -92,14 +92,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 terminal.write('\nRegistration successful!\r\n');
                 terminal.write("\nRedirecting...");
                 setTimeout(() => {
-                    window.location.href = '/tasks.html'; // Redirect to login page
+                    window.location.href = '../login.html';
                 }, 3000);
             })
             .catch(error => {
                 resetTerminal();
                 terminal.write(`Error: ${error.message}\r\n`);
                 terminal.write('Please, try again.\r\n');
-                setTimeout(resetTerminal, 2000); // Reset terminal after a brief delay
+                setTimeout(resetTerminal, 2000);
             });
     }
 });

@@ -12,7 +12,6 @@ import org.springframework.hateoas.RepresentationModel;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -32,11 +31,8 @@ public class Project extends RepresentationModel<Project> implements Serializabl
     private List<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(name = "user_id")
-    private UUID userId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

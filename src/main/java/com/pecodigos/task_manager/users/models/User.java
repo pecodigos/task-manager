@@ -1,5 +1,6 @@
 package com.pecodigos.task_manager.users.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pecodigos.task_manager.projects.models.Project;
 import com.pecodigos.task_manager.tasks.models.Task;
 import jakarta.persistence.*;
@@ -42,9 +43,11 @@ public class User extends RepresentationModel<User> implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Project> projects;
 
     @CreationTimestamp

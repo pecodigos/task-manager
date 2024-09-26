@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     terminal.write('Login successful!\r\n');
                     terminal.write("\nRedirecting...");
                     setTimeout(() => {
-                        window.location.href = "../projects.html"; // Redirect after a delay
+                        window.location.href = "../projects.html";
                     }, 2000);
                 } else {
                     throw new Error('Login failed');

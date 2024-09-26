@@ -1,12 +1,16 @@
 package com.pecodigos.task_manager.tasks.controllers;
 
+import com.pecodigos.task_manager.projects.services.ProjectService;
 import com.pecodigos.task_manager.tasks.dtos.TaskDTO;
 import com.pecodigos.task_manager.tasks.models.Task;
 import com.pecodigos.task_manager.tasks.services.TaskService;
+import com.pecodigos.task_manager.users.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -22,6 +26,12 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProjectService projectService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTask(@PathVariable(name = "id") Long id) {
@@ -52,7 +62,10 @@ public class TaskController {
     @PostMapping("/")
     public ResponseEntity<Object> saveTask(@Valid @RequestBody TaskDTO taskDTO) {
         try {
-            var task = taskService.saveTask(taskDTO);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userService.findByUsername(authentication.getName());
+
+            var task = taskService.saveTask(taskDTO, user);
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

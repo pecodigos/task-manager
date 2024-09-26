@@ -1,11 +1,13 @@
 package com.pecodigos.task_manager.users.services;
 
 import com.pecodigos.task_manager.users.dtos.LoginDTO;
+import com.pecodigos.task_manager.users.dtos.RegisterDTO;
 import com.pecodigos.task_manager.users.dtos.UserDTO;
 import com.pecodigos.task_manager.users.models.User;
 import com.pecodigos.task_manager.users.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,11 @@ public class UserService implements UserServiceInterface{
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    }
+
     public String hashPassword(String password) {
         return passwordEncoder.encode(password);
     }
@@ -37,16 +44,16 @@ public class UserService implements UserServiceInterface{
     }
 
     @Override
-    public User saveUser(UserDTO userDTO) {
-        if (userRepository.findByUsername(userDTO.username()).isPresent()) {
+    public User saveUser(RegisterDTO registerDTO) {
+        if (userRepository.findByUsername(registerDTO.username()).isPresent()) {
             throw new IllegalArgumentException("Username already exists.");
         }
-        if (userRepository.findByEmail(userDTO.email()).isPresent()) {
+        if (userRepository.findByEmail(registerDTO.email()).isPresent()) {
             throw new IllegalArgumentException("There's an account with that email");
         }
         var user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        user.setPassword(hashPassword(userDTO.password()));
+        BeanUtils.copyProperties(registerDTO, user);
+        user.setPassword(hashPassword(registerDTO.password()));
 
         return userRepository.save(user);
     }

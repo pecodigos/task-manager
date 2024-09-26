@@ -34,18 +34,12 @@ public class Task extends RepresentationModel<Task> implements Serializable {
     private Status status = Status.IN_PROGRESS;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "user_id")
-    private UUID userId;
-
     @ManyToOne
-    @JoinColumn(name = "project_id", insertable = false, updatable = false)
+    @JoinColumn(name = "project_id")
     private Project project;
-
-    @Column(name = "project_id")
-    private Long projectId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

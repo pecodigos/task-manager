@@ -3,6 +3,7 @@ package com.pecodigos.task_manager.projects.services;
 import com.pecodigos.task_manager.projects.dtos.ProjectDTO;
 import com.pecodigos.task_manager.projects.models.Project;
 import com.pecodigos.task_manager.projects.repositories.ProjectRepository;
+import com.pecodigos.task_manager.users.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,10 @@ public class ProjectService implements ProjectServiceInterface{
     }
 
     @Override
-    public Project saveProject(ProjectDTO projectDTO) {
+    public Project saveProject(ProjectDTO projectDTO, User user) {
         var project = new Project();
         BeanUtils.copyProperties(projectDTO, project);
+        project.setUser(user);
 
         return projectRepository.save(project);
     }
