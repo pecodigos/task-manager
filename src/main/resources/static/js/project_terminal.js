@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(() => {
                 terminal.write('Project created successfully!\r\n');
-                resetTerminal(); // Reset the terminal after creating a project
+                setTimeout(resetTerminal, 3000); // Reset the terminal after creating a project
             })
             .catch(error => {
                 terminal.write(`Error: ${error.message}\r\n`);
@@ -104,18 +104,26 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Function to handle viewing existing projects
     function viewProjects() {
         fetch('/projects/', {
             method: 'GET'
         })
-            .then(response => response.json())
-            .then(data => {
-                terminal.write('\nYour projects:\r\n');
-                terminal.write('\n');
-                data.forEach(project => {
-                    terminal.write(`- ${project.title}: ${project.description}\r\n`);
-                });
+            .then(response => {
+                if (!response.ok) {
+                    console.log('Error fetching projects');
+                }
+                return response.text();  // Get the raw text response
+            })
+            .then(text => {
+                const data = text ? JSON.parse(text) : [];  // Parse only if text is not empty
+                if (data.length === 0) {
+                    terminal.write('\n\nNo projects found.\r\n');
+                } else {
+                    terminal.write('\nYour projects:\r\n');
+                    data.forEach(project => {
+                        terminal.write(`- ${project.title}: ${project.description}\r\n`);
+                    });
+                }
                 currentStep = 'viewProjects';
                 terminal.write("\n\nPress enter to go back...\r\n");
             })
