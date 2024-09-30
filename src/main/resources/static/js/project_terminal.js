@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
     const terminal = new Terminal();
-    const fitAddon = new FitAddon.FitAddon(); // Global FitAddon object
+    const fitAddon = new FitAddon.FitAddon();
     terminal.loadAddon(fitAddon);
 
     terminal.open(document.getElementById('terminal'));
-    fitAddon.fit(); // Fit the terminal to its container
+    fitAddon.fit();
 
-    let currentStep = 'menu'; // track the current step
+    let currentStep = 'menu';
     let menuOptions = ['[ ] Create new project', '[ ] Select existing project', '[ ] Delete existing project'];
     let selectedOption = 0;
     let userInput = '';
     let actions = ['create', 'select', 'delete'];
 
-    let projects = []; // To store fetched projects
-    let selectedProjectIndex = 0; // To track selected project
+    let projects = [];
+    let selectedProjectIndex = 0;
 
     function resetTerminal() {
         currentStep = 'menu';
@@ -32,13 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    resetTerminal(); // Initialize terminal
+    resetTerminal();
 
     terminal.onKey((e) => {
         const char = e.key;
         const domEvent = e.domEvent;
 
-        // Handle menu navigation
         if (currentStep === 'menu') {
             if (domEvent.key === 'ArrowUp') {
                 selectedOption = (selectedOption - 1 + menuOptions.length) % menuOptions.length;
@@ -46,14 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (domEvent.key === 'ArrowDown') {
                 selectedOption = (selectedOption + 1) % menuOptions.length;
                 renderMenu();
-            } else if (char === '\r') { // Enter key pressed
+            } else if (char === '\r') {
                 if (actions[selectedOption] === 'create') {
-                    currentStep = 'title'; // Go to the project creation step
+                    currentStep = 'title';
                     terminal.write('\nPlease enter the title of your new project:\r\n> ');
                 } else if (actions[selectedOption] === 'select') {
-                    fetchProjectsForSelection(); // Fetch and select a project
+                    fetchProjectsForSelection();
                 } else if (actions[selectedOption] === 'delete') {
-                    fetchProjectsForDeletion(); // Fetch projects for deletion
+                    fetchProjectsForDeletion();
                 }
             }
         } else if (currentStep === 'title' || currentStep === 'description') {
@@ -68,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     postProject(title, userInput);
                 }
                 userInput = '';
-            } else if (domEvent.key === 'Backspace') { // Handle Backspace key
+            } else if (domEvent.key === 'Backspace') {
                 if (userInput.length > 0) {
                     userInput = userInput.slice(0, -1);
                     terminal.write('\b \b');
@@ -84,14 +83,24 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (domEvent.key === 'ArrowDown') {
                 selectedProjectIndex = (selectedProjectIndex + 1) % projects.length;
                 renderProjectsForSelection();
-            } else if (char === '\r') { // Enter key pressed
+            } else if (char === '\r') {
                 const projectToSelect = projects[selectedProjectIndex];
-                redirectToTasks(projectToSelect.id); // Redirect to tasks.html with the project ID
+                redirectToTasks(projectToSelect.id);
+            }
+        } else if (currentStep === 'deleteProjectSelection') {
+            if (domEvent.key === 'ArrowUp') {
+                selectedProjectIndex = (selectedProjectIndex - 1 + projects.length) % projects.length;
+                renderProjectsForDeletion();
+            } else if (domEvent.key === 'ArrowDown') {
+                selectedProjectIndex = (selectedProjectIndex + 1) % projects.length;
+                renderProjectsForDeletion();
+            } else if (char === '\r') {
+                const projectToDelete = projects[selectedProjectIndex];
+                deleteProject(projectToDelete.id);
             }
         }
     });
 
-    // Function to handle project creation
     function postProject(title, description) {
         fetch('/projects/', {
             method: 'POST',
@@ -117,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Function to fetch projects for selection
     function fetchProjectsForSelection() {
         fetch('/projects/', {
             method: 'GET'
@@ -135,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(resetTerminal, 3000);
                 } else {
                     currentStep = 'selectProject';
+                    selectedProjectIndex = 0; // Reset the selected project index
                     renderProjectsForSelection();
                 }
             })
@@ -144,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Render projects for selection
     function renderProjectsForSelection() {
         terminal.clear();
         terminal.write('Select a project to view its tasks:\r\n');
@@ -155,12 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
         terminal.write("\nUse arrow keys to select and press enter to proceed.");
     }
 
-    // Function to redirect to tasks.html with the selected project ID
     function redirectToTasks(projectId) {
         window.location.href = `/tasks.html?projectId=${projectId}`;
     }
 
-    // Function to fetch projects for deletion
     function fetchProjectsForDeletion() {
         fetch('/projects/', {
             method: 'GET'
@@ -178,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(resetTerminal, 3000);
                 } else {
                     currentStep = 'deleteProjectSelection';
+                    selectedProjectIndex = 0; // Reset the selected project index
                     renderProjectsForDeletion();
                 }
             })
@@ -187,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Render projects for deletion
     function renderProjectsForDeletion() {
         terminal.clear();
         terminal.write('Select a project to delete:\r\n');
@@ -198,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
         terminal.write("\nUse arrow keys to select and press enter to delete.");
     }
 
-    // Function to delete a project
     function deleteProject(projectId) {
         fetch(`/projects/${projectId}`, {
             method: 'DELETE'
