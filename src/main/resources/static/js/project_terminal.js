@@ -7,10 +7,13 @@ document.addEventListener("DOMContentLoaded", function () {
     fitAddon.fit(); // Fit the terminal to its container
 
     let currentStep = 'menu'; // track the current step
-    let menuOptions = ['[ ] Create new project', '[ ] View existing projects'];
+    let menuOptions = ['[ ] Create new project', '[ ] Select existing project', '[ ] Delete existing project'];
     let selectedOption = 0;
     let userInput = '';
-    let actions = ['create', 'view']; // action options
+    let actions = ['create', 'select', 'delete'];
+
+    let projects = []; // To store fetched projects
+    let selectedProjectIndex = 0; // To track selected project
 
     function resetTerminal() {
         currentStep = 'menu';
@@ -46,34 +49,44 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (char === '\r') { // Enter key pressed
                 if (actions[selectedOption] === 'create') {
                     currentStep = 'title'; // Go to the project creation step
-                    terminal.write('Please enter the title of your new project:\r\n> ');
-                } else if (actions[selectedOption] === 'view') {
-                    viewProjects(); // Function to handle fetching and displaying projects
+                    terminal.write('\nPlease enter the title of your new project:\r\n> ');
+                } else if (actions[selectedOption] === 'select') {
+                    fetchProjectsForSelection(); // Fetch and select a project
+                } else if (actions[selectedOption] === 'delete') {
+                    fetchProjectsForDeletion(); // Fetch projects for deletion
                 }
             }
-        } else if (currentStep === 'title') {
-            if (char === '\r') { // Enter key pressed
-                terminal.write('\r\n');
-                title = userInput;
-                terminal.write('\nPlease enter a description:\r\n> ');
-                currentStep = 'description';
-                userInput = '';
-            } else {
-                terminal.write(char);
-                userInput += char;
-            }
-        } else if (currentStep === 'description') {
-            if (char === '\r') { // Enter key pressed
-                terminal.write('\nCreating project...\r\n');
-                postProject(title, userInput); // Create project
-            } else {
-                terminal.write(char);
-                userInput += char;
-            }
-        }
-        else if (currentStep === 'viewProjects') {
+        } else if (currentStep === 'title' || currentStep === 'description') {
             if (char === '\r') {
-                resetTerminal();
+                terminal.write('\r\n');
+                if (currentStep === 'title') {
+                    title = userInput;
+                    terminal.write('\nPlease enter a description:\r\n> ');
+                    currentStep = 'description';
+                } else if (currentStep === 'description') {
+                    terminal.write('\r\nCreating project...\r\n');
+                    postProject(title, userInput);
+                }
+                userInput = '';
+            } else if (domEvent.key === 'Backspace') { // Handle Backspace key
+                if (userInput.length > 0) {
+                    userInput = userInput.slice(0, -1);
+                    terminal.write('\b \b');
+                }
+            } else {
+                terminal.write(char);
+                userInput += char;
+            }
+        } else if (currentStep === 'selectProject') {
+            if (domEvent.key === 'ArrowUp') {
+                selectedProjectIndex = (selectedProjectIndex - 1 + projects.length) % projects.length;
+                renderProjectsForSelection();
+            } else if (domEvent.key === 'ArrowDown') {
+                selectedProjectIndex = (selectedProjectIndex + 1) % projects.length;
+                renderProjectsForSelection();
+            } else if (char === '\r') { // Enter key pressed
+                const projectToSelect = projects[selectedProjectIndex];
+                redirectToTasks(projectToSelect.id); // Redirect to tasks.html with the project ID
             }
         }
     });
@@ -95,37 +108,107 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(() => {
                 terminal.write('Project created successfully!\r\n');
-                setTimeout(resetTerminal, 3000); // Reset the terminal after creating a project
+                setTimeout(resetTerminal, 3000);
             })
             .catch(error => {
                 terminal.write(`Error: ${error.message}\r\n`);
                 terminal.write('Please try again.\r\n');
-                setTimeout(resetTerminal, 3000); // Reset terminal after delay
+                setTimeout(resetTerminal, 3000);
             });
     }
 
-    function viewProjects() {
+    // Function to fetch projects for selection
+    function fetchProjectsForSelection() {
         fetch('/projects/', {
             method: 'GET'
         })
             .then(response => {
                 if (!response.ok) {
-                    console.log('Error fetching projects');
+                    throw new Error('Error fetching projects for selection.');
                 }
-                return response.text();  // Get the raw text response
+                return response.json();
             })
-            .then(text => {
-                const data = text ? JSON.parse(text) : [];  // Parse only if text is not empty
-                if (data.length === 0) {
-                    terminal.write('\n\nNo projects found.\r\n');
+            .then(data => {
+                projects = data;
+                if (projects.length === 0) {
+                    terminal.write('\n\nNo projects available to select.\r\n');
+                    setTimeout(resetTerminal, 3000);
                 } else {
-                    terminal.write('\nYour projects:\r\n');
-                    data.forEach(project => {
-                        terminal.write(`- ${project.title}: ${project.description}\r\n`);
-                    });
+                    currentStep = 'selectProject';
+                    renderProjectsForSelection();
                 }
-                currentStep = 'viewProjects';
-                terminal.write("\n\nPress enter to go back...\r\n");
+            })
+            .catch(error => {
+                terminal.write(`Error: ${error.message}\r\n`);
+                setTimeout(resetTerminal, 3000);
+            });
+    }
+
+    // Render projects for selection
+    function renderProjectsForSelection() {
+        terminal.clear();
+        terminal.write('Select a project to view its tasks:\r\n');
+        projects.forEach((project, index) => {
+            let prefix = index === selectedProjectIndex ? '[x]' : '[ ]';
+            terminal.write(`${prefix} ${project.title}\r\n`);
+        });
+        terminal.write("\nUse arrow keys to select and press enter to proceed.");
+    }
+
+    // Function to redirect to tasks.html with the selected project ID
+    function redirectToTasks(projectId) {
+        window.location.href = `/tasks.html?projectId=${projectId}`;
+    }
+
+    // Function to fetch projects for deletion
+    function fetchProjectsForDeletion() {
+        fetch('/projects/', {
+            method: 'GET'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error fetching projects for deletion.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                projects = data;
+                if (projects.length === 0) {
+                    terminal.write('\n\nNo projects available to delete.\r\n');
+                    setTimeout(resetTerminal, 3000);
+                } else {
+                    currentStep = 'deleteProjectSelection';
+                    renderProjectsForDeletion();
+                }
+            })
+            .catch(error => {
+                terminal.write(`Error: ${error.message}\r\n`);
+                setTimeout(resetTerminal, 3000);
+            });
+    }
+
+    // Render projects for deletion
+    function renderProjectsForDeletion() {
+        terminal.clear();
+        terminal.write('Select a project to delete:\r\n');
+        projects.forEach((project, index) => {
+            let prefix = index === selectedProjectIndex ? '[x]' : '[ ]';
+            terminal.write(`${prefix} ${project.title}\r\n`);
+        });
+        terminal.write("\nUse arrow keys to select and press enter to delete.");
+    }
+
+    // Function to delete a project
+    function deleteProject(projectId) {
+        fetch(`/projects/${projectId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete project.');
+                }
+                terminal.write('\nProject deleted successfully!\r\n');
+                setTimeout(resetTerminal, 3000);
             })
             .catch(error => {
                 terminal.write(`Error: ${error.message}\r\n`);
